@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pitchside Pot — On-chain Fantasy Contests</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;500;600&family=Familjen+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--motion-fast:200ms;--motion-base:600ms;--motion-slow:1100ms;--t:#052c33;--t2:#0a3f48;--t3:#0f5662;--chalk:#f3f1ea;--sal:#ff6f61;--line:#ffffff26}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
+body{background:var(--t);color:var(--chalk);font-family:'Familjen Grotesk',sans-serif;overflow-x:hidden;line-height:1.5;
+background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:80px 80px;background-attachment:fixed;background-blend-mode:soft-light}
+.mono{font-family:'IBM Plex Mono',monospace}a{color:inherit}
+.top{position:sticky;top:0;z-index:30;background:var(--t);border-bottom:2px solid var(--chalk);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 3vw}
+.lg{font:900 1.7rem 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:.02em;text-decoration:none}.lg b{color:var(--sal)}
+.ctl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chip{font:500 .72rem 'IBM Plex Mono',monospace;color:var(--chalk);border:1.5px solid var(--chalk);padding:7px 10px;background:transparent;text-decoration:none;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.chip.hot{background:var(--sal);border-color:var(--sal);color:var(--t)}
+select.chip option{color:#000}
+.chip b{color:var(--sal)}
+.hero{padding:60px 3vw 40px; grid-auto-fl grid-auto-flow:dense;ow:dense; grid-auto-fl grid-auto-flow:dense;ow:dense;display:grid;grid-template-columns:repeat(12,1fr);gap:20px;position:relative}
+.hero h1{grid-column:1/10;font:900 clamp(4rem,15vw,15rem)/.8 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:-.01em}
+.hero h1 em{font-style:normal;color:transparent;-webkit-text-stroke:2px var(--chalk)}
+.hero h1 .s{color:var(--sal)}
+.board{grid-column:7/13;grid-row:2;background:#021a1f;border:3px solid var(--chalk);padding:18px 22px;margin-top:-30px;position:relative;z-index:2}
+.board .l{font:500 .7rem 'IBM Plex Mono',monospace;letter-spacing:.2em;color:#9fc7cb}
+.digits{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.dg{font:700 clamp(2.6rem,6vw,4.6rem)/1 'IBM Plex Mono',monospace;background:#000;color:var(--sal);padding:4px 10px;border-bottom:3px solid #0008;min-width:.72em;text-align:center;overflow:hidden;position:relative;text-shadow:0 0 18px #ff6f6188}
+.dg.dot{background:transparent;padding:4px 0;min-width:0}
+.hero .copy{grid-column:1/6;grid-row:2;align-self:start;max-width:40ch}
+.launch{display:inline-block;font:600 .85rem 'IBM Plex Mono',monospace;background:var(--chalk);color:var(--t);padding:8px 12px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px}
+.tick{background:var(--sal);color:var(--t);overflow:hidden;border-block:2px solid var(--chalk)}
+.tick div{display:flex;gap:46px;width:max-content;animation:tk 30s linear infinite;padding:10px 0;font:900 1.5rem 'Big Shoulders Display',sans-serif;text-transform:uppercase}
+.tick:hover div{animation-play-state:paused}
+@keyframes tk{to{transform:translateX(-50%)}}
+section{padding:80px 3vw}
+h2{font:900 clamp(3rem,9vw,8rem)/.85 'Big Shoulders Display',sans-serif;text-transform:uppercase;margin-bottom:34px}
+h2 span{color:var(--sal)}
+.lab{font:500 .72rem 'IBM Plex Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:#9fc7cb;margin-bottom:8px}
+.tbl{ grid-auto-f grid-auto-flow:dense;low:dense grid-auto-fl grid-auto-flow:dense;ow:dense;;border-top:3px solid var(--chalk)}
+.hd,.rw{display:grid;grid-template-columns:70px 1.8fr .8fr .8fr .8fr 150px;gap:14px;align-items:center;padding:16px 6px}
+.hd{font:500 .68rem 'IBM Plex Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#9fc7cb;border-bottom:1px solid var(--chalk)}
+.rw{border-bottom:1px solid var(--line);position:relative;overflow:hidden;transition:background .3s,padding .3s;isolation:isolate}
+.rw:before{content:"";position:absolute;inset:0;background:var(--t3);transform:scaleX(var(--p,0));transform-origin:left;transition:transform 1.3s cubic-bezier(.2,.8,.2,1);z-index:-1}
+.rw:hover{padding-left:20px;background:#ffffff0a}
+.rw .no{font:900 2.6rem 'Big Shoulders Display',sans-serif;color:var(--sal);line-height:1}
+.rw .nm{font:900 clamp(1.5rem,3vw,2.5rem)/1 'Big Shoulders Display',sans-serif;text-transform:uppercase}
+.rw .v{font:600 1rem 'IBM Plex Mono',monospace}.rw small{display:block;font:400 .65rem 'IBM Plex Mono',monospace;color:#9fc7cb;letter-spacing:.1em;text-transform:uppercase}
+.st{font:600 .7rem 'IBM Plex Mono',monospace;padding:4px 8px;border:1.5px solid var(--chalk);display:inline-block}.st.open{background:var(--chalk);color:var(--t)}.st.res{background:var(--sal);border-color:var(--sal);color:var(--t)}
+button.go,.fm button{font:700 1rem 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:.06em;background:var(--sal);color:var(--t);border:0;padding:11px 16px;cursor:pointer;transition:transform .2s,background .2s}
+button.go:hover,.fm button:hover{background:var(--chalk);transform:translate(-3px,-3px);b grid-auto-fl grid-auto-flow:dense;ow:dense; grid-auto-flow:dense;ox-shadow:3px 3px 0 var(--sal)}
+button:disabled{opacity:.35;cursor:not-allowed}
+.locker{display:grid;grid-template grid-auto-flow:dense;-columns:repeat(3,1fr) grid-auto-flow:dense;;gap:0;border:3px solid var(--chalk);background:#021a1f}
+.fm{padding:26px;border-right:1px solid var(--chalk);display:grid;gap:12px;align-content:start}.fm:last-child{border:0}
+.fm h5{font:900 2rem 'Big Shoulders Display',sans-serif;text-transform:uppercase}.fm h5 i{font:500 .7rem 'IBM Plex Mono',monospace;color:var(--sal);display:blo grid-auto-flow:dense;ck;font-style:normal;l grid-auto-flow:dense;etter-spacing:.1em}
+.fm label{font:500 .66rem 'IBM Plex Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#9fc7cb;display:grid;gap:4px}
+.fm input{font:500 1rem 'IBM Plex Mono',monospace;background:var(--t);color:var(--chalk);border:1.5px solid var(--chalk);padding:10px;width:100%;outline:0}.fm input:focus{border-color:var(--sal)}
+.fm button{justify-self:start}
+.note{font:400 .72rem 'IBM Plex Mono',monospace;color:#9fc7cb}
+.big{padding:60px 3vw;font:900 clamp(2rem,6vw,5rem)/.9 'Big Shoulders Display',sans-serif;text-transform:uppercase;border-top:3px solid var(--chalk)}
+footer{display:flex;flex-wrap:wrap;gap:8px 18px;padding:24px 3vw 40px;font:400 .72rem 'IBM Plex grid-auto-flow:dense; Mono',monospace;borde grid-auto-flow:dense;r-top:1px solid var(--line);color:#9fc7cb}
+footer b{color:var(--chalk)}footer a{color:var(--sal)}
+#toasts{position:fixed;bottom:16px;left:16px;z-index:99;display:grid;gap:8px;max-width:calc(100vw - 32px)}
+.toast{background:var(--chalk);color:var(--t);padding:12px 16px;border-left:8px solid var(--t3);font:600 .78rem 'IBM Plex Mono',monospace;transform:translateX(-30px);opacity:0;transition:.35s}.toast.in{transform:none;opacity:1}.toast.ok{border-color:#1fa36a}.toast.err{border-color:#d62f2f}.toast.warn{border-color:#d68a1a}
+.cur{position:fixed;z-index:99;pointer-events:none;width:20px;height:20px;border-radius:50%;background:var(--sal);transform:translate(-50%,-50%);transition:width .25s,height .25s;mix-blend-mode:screen}
+.cur:after{content:"";position:absolute;inset:-12px;border:1px solid var(--chalk);border-radius:50%}
+.cur.big{width:44px;height:44px}
+.rv{opacity:0;transform:translateX(-50px);clip-path:inset(0 100% 0 0);transition:1s cubic-bezier(.2,.8, grid-auto-flow:dense;.2,1)}.rv.in{opacity:1;transform:none;clip-p grid-auto-flow:dense;ath:inset(0 0 0 0)}
+@media(max-width:860px){ grid-auto-flow:dense;.hero h1{grid-colu grid-auto-flow:dense;mn:1/-1}.board,.hero .copy{grid-column:1/-1;grid-row:auto;margin-top:0}.hd{display:none}.rw{grid-template-columns:50px 1fr 1fr;row-gap:10px}.rw .nm{grid-column:2/4}.rw .act{grid-column:1/-1}.locker{grid-template-columns:1fr}.fm{border-right:0;border-bottom:1px solid var(--chalk)}.cur{display:none}}
+@media(hover:none){.cur{display:none}}
+
+@media(prefers-reduced-motion:reduce){.rv{transition:none!important;opacity:1;transform:none!important}*{animation:none!important}}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--acc,currentColor);outline-offset:2px}</style></head><body>
+<div class="cur" id="cur"></div>
+<div class="top"><a class="lg" href="javascript:void(0)">Pitchside<b>Pot</b></a><div class="ctl">
+<span class="chip">Chain ID <b data-chain>677</b></span>
+<select class="chip" data-net aria-label="Network"><option value="677">Mainnet 677</option><option value="968">Testnet 968</option></select>
+<a class="chip" id="xlink" target="_blank" rel="noopener" aria-label="X"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M18.9 2H22l-7.2 8.2L23 22h-6.6l-5.2-6.8L5.2 22H2l7.7-8.8L1.5 2h6.8l4.7 6.2L18.9 2zm-1.2 18h1.8L7.4 3.9H5.5L17.7 20z"/></svg> @X</a>
+<button class="chip hot" data-connect><span data-acct>Connect wallet</span></button></div></div>
+
+<header class="hero">
+<h1 class="rv">Play<br><em>for the</em><br><span class="s">pot.</span></h1>
+<div class="copy rv"><p class="launch">Built on BOT Chain Mainnet</p><p>Entry fees go in, the prize pool grows, a winner is resolved on-chain. Every contest is a public ledger — no house, no hidden rake.</p></div>
+<div class="board rv"><div class="l">TOTAL PRIZE POOLS · BOT · <span data-mode>Demo mode</span></div><div class="digits" id="digits"></div></div>
+</header>
+<div class="tick"><div><span>Join · Compete · Resolve</span><span></span><span>Entry fee in, prize pool out</span><span></span><span>Winner takes the pot</span><span></span><span>Join · Compete · Resolve</span><span></span><span>Entry fee in, prize pool out</span><span></span><span>Winner takes the pot</span><span></span></div></div>
+
+<section><div class="lab rv">Fixtures</div><h2 class="rv">The <span>league</span> table</h2>
+<div class="tbl"><div class="hd"><span>No.</span><span>Contest</span><span>Entry</span><span>Pool</span><span>Entrants</span><span></span></div><div id="list"></div></div></section>
+
+<section><div class="lab rv">Locker room</div><h2 class="rv">Run the <span>contest</span></h2>
+<div class="locker rv">
+<form class="fm" id="f1"><h5><i>01 · ORGANISER</i>createContest</h5><label>Contest name<input name="n" placeholder="Weekend Gameweek Cup" required></label><label>Entry fee (BOT)<input name="fee" type="number" step="any" min="0" value="0.25" required></label><label>Deadline<input name="d" type="datetime-local" required></label><button>Open contest</button></form>
+<form class="fm" id="f2"><h5><i>02 · PLAYER</i>joinContest</h5><label>Contest #<input name="id" type="number" min="1" value="1" required></label><span class="note">Sends the entry fee as value.</span><button>Pay &amp; join</button></form>
+<form class="fm" id="f3"><h5><i>03 · REFEREE</i>resolveContest</h5><label>Contest #<input name="id" type="number" min="1" value="1" required></label><label>Winner address<input name="w" placeholder="0x…" required></label><button>Blow the whistle</button></form></div></section>
+<div class="big">Built on BOT Chain Mainnet</div>
+<footer><span>Pitchside Pot — Fantasy sports contests with entry fees and prize pools on BOT Chain</span><span>&#8226; Chain ID <b>677</b> &#8226; Contract <span class="mono">0xCA…</span></span><span>&#8226; <a href="https://botchain.ai" target="_blank" rel="noopener">BOT Chain Website</a> &#8226; <a href="https://scan.botchain.ai/" target="_blank" rel="noopener">BOTScan Explorer</a></span></footer>
+<div id="toasts"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@reown/appkit@1.8.21/dist/appkit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@reown/appkit-adapter-ethers@1.8.21/dist/appkit-adapter-ethers.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script>
+const X_HANDLE='PitchsidePot'; // TODO: replace with real X handle
+const CA={677:'0x00000000000000000000000000000000000000CA',968:''}; // TODO: deployed contract addresses
+const ABI=['function createContest(string name,uint256 entryFee,uint256 deadline) returns (uint256)','function joinContest(uint256 contestId) payable','function resolveContest(uint256 contestId,address winner)','function contestCount() view returns (uint256)','function getContest(uint256 id) view returns (string name,uint256 entryFee,uint256 deadline,uint256 pool,uint256 entrants,bool resolved)'];
+const COUNT_FN='contestCount',GET_FN='getContest';
+const now=Math.floor(Date.now()/1000);
+const DEMO=[{id:3,name:'Gameweek Cup',fee:'0.25',deadline:now+86400*2,pool:'18.5',n:74,done:false},{id:2,name:'Sunday Sevens',fee:'1',deadline:now+86400*5,pool:'42',n:42,done:false},{id:1,name:'Derby Day Showdown',fee:'0.5',deadline:now-86400*3,pool:'31',n:62,done:true}];
+function fromTuple(id,t){return{id,name:t[0],fee:ethers.formatEther(t[1]),deadline:Number(t[2]),pool:ethers.formatEther(t[3]),n:Number(t[4]),done:t[5]}}
+const NETS={677:{hex:'0x2a5',name:'BOT Chain Mainnet',rpc:'https://rpc.botchain.ai',scan:'https://scan.botchain.ai',cur:'BOT'},968:{hex:'0x3c8',name:'BOT Chain Testnet',rpc:'https://rpc.bohr.life',scan:'https://scan.botchain.ai',cur:'BOT'}};
+const S={net:677,account:null,provider:null,signer:null,items:[]};
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+function toast(msg,kind='info'){const t=document.createElement('div');t.className='toast '+kind;t.textContent=msg;$('#toasts').appendChild(t);requestAnimationFrame(()=>t.classList.add('in'));setTimeout(()=>{t.classList.remove('in');setTimeout(()=>t.remove(),400)},4200)}
+function short(a){return a?a.slice(0,6)+'…'+a.slice(-4):''}
+function demoMode(){return !(S.signer&&CA[S.net])}
+function paintMode(){const d=demoMode();$$('[data-mode]').forEach(e=>e.textContent=d?'Demo mode · sample data':'Live · on-chain');document.body.classList.toggle('live',!d);$$('[data-chain]').forEach(e=>e.textContent=S.net);$$('[data-acct]').forEach(e=>e.textContent=S.account?short(S.account):'Connect wallet')}
+async function addChain(id){const n=NETS[id];await window.ethereum.request({method:'wallet_addEthereumChain',params:[{chainId:n.hex,chainName:n.name,nativeCurrency:{name:n.cur,symbol:n.cur,decimals:18},rpcUrls:[n.rpc],blockExplorerUrls:[n.scan]}]})}
+async function ensureChain(id){if(!window.ethereum)return;try{await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:NETS[id].hex}]})}catch(e){if(e.code===4902||(e.data&&e.data.originalError&&e.data.originalError.code===4902)||/unrecognized|not added/i.test(explainError(e)||'')){await addChain(id)}else throw e}}
+, true);
+
+// ===== Phase B: AppKit + GSAP runtime =====
+const PROJECT_ID='f018499b1e4a94d961ab67aeeeff3254';
+const CA677='0x0000000000000000000000000000000000000000';
+const NETS={677:{label:'Mainnet 677',rpc:'https://rpc.botchain.ai',hex:'0x2a5',ca:CA677},968:{label:'Testnet 968',rpc:'https://rpc.bohr.life',hex:'0x3c8',ca:'0x0000000000000000000000000000000000000000'}};
+let appkit=null, currentNet=677;
+
+async function initAppKit(){
+  try{
+    const {createAppKit}=window;
+    const {EthersAdapter}=window;
+    const adapter=new EthersAdapter();
+    appkit=createAppKit({
+      adapters:[adapter],
+      networks:[
+        {id:677,name:'BOT Mainnet',nativeCurrency:{name:'BOT',symbol:'BOT',decimals:18},rpcUrls:{default:{http:['https://rpc.botchain.ai']}}},
+        {id:968,name:'BOT Testnet',nativeCurrency:{name:'BOT',symbol:'BOT',decimals:18},rpcUrls:{default:{http:['https://rpc.bohr.life']}}}
+      ],
+      projectId:PROJECT_ID,
+      features:{analytics:false}
+    });
+    appkit.subscribeAccount((a)=>{const addr=a.address||null;const b=$('#connect')||$('#connectBtn')||$('#walletBtn')||$('#wbtn');if(b)b.textContent=addr?addr.slice(0,6)+'…'+addr.slice(-4):'Connect wallet';const m=$('#mode')||$('#modeTag');if(m)m.textContent=addr?'LIVE':'DEMO';});
+    appkit.subscribeNetwork((n)=>{if(n&&n.chainId){currentNet=Number(n.chainId);const b=$('#badge')||$('#cid')||$('#chainBadge')||$('#netpill');if(b)b.textContent='Chain ID '+currentNet;}});
+  }catch(e){console.warn('AppKit init failed',e);}
+}
+async function appkitConnect(){
+  if(!appkit)await initAppKit();
+  if(appkit){try{await appkit.open();}catch(e){toast('AppKit connect failed: '+(explainError(e)||e.code),'err');}return;}
+  // Fallback: raw ethers connect
+  if(!window.ethereum){toast('No wallet found - install a Web3 wallet',true);return;}
+  try{const accts=await window.ethereum.request({method:'eth_requestAccounts'});setWallet(accts.length>0,accts[0]);provider=new ethers.BrowserProvider(window.ethereum);signer=await provider.getSigner();await ensureChain();initContract();}catch(e){toast('Wallet connect: '+ (explainError(e)||e.code),true);}}
+function setWallet(connected,addr){const b=$('#connect')||$('#connectBtn')||$('#walletBtn')||$('#wbtn');if(b)b.textContent=addr?addr.slice(0,6)+'…'+addr.slice(-4):'Connect wallet';b.classList.toggle('connected',!!addr);}
+function initContract(){if(!currentNet){return;}try{const provider=new ethers.JsonRpcProvider(NETS[currentNet].rpc);const abi=[];contract=new ethers.Contract(NETS[currentNet].ca,abi,signer||provider);}catch(e){console.warn('contract init',e);contract=null;}}
+async function ensureChain(){if(!window.ethereum)return;try{const cid=await window.ethereum.request({method:'eth_chainId'});currentNet=Number(cid);if(NETS[currentNet]){}else{try{await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x2a5'}]});currentNet=677;}catch(sw){if(sw.code===4902){try{await window.ethereum.request({method:'wallet_addEthereumChain',params:[{chainId:'0x2a5',chainName:'BOT Chain Mainnet',nativeCurrency:{name:'BOT',symbol:'BOT',decimals:18},rpcUrls:['https://rpc.botchain.ai']}]})}catch(ae){toast('Add chain failed: '+(aexplainError(e)||ae.code),'err');}}}else{toast('Switch rejected: '+(sw.message||sw.code),'err');}}}catch(e){currentNet=677;}}
+
+function explainError(e){if(!e)return 'Unknown error';const m=explainError(e)||explainError(e)||(e.data&&e.data.message)||'';if(e.code===4001)return 'Transaction rejected in wallet. Nothing spent on-chain.';let msg=String(m||explainError(e)||String(e));msg=msg.replace(/^execution reverted:/i,'').trim();if(msg.length>170)msg=msg.slice(0,167)+'...';return msg;}
+// ===== Phase B: AppKit + GSAP runtime =====
+const PROJECT_ID='f018499b1e4a94d961ab67aeeeff3254';
+const CA677='0x0000000000000000000000000000000000000000';
+const NETS={677:{label:'Mainnet 677',rpc:'https://rpc.botchain.ai',hex:'0x2a5',ca:CA677},968:{label:'Testnet 968',rpc:'https://rpc.bohr.life',hex:'0x3c8',ca:'0x0000000000000000000000000000000000000000'}};
+let appkit=null, currentNet=677, contract=null, signer=null;
+
+async function initAppKit(){
+  try{
+    const {createAppKit}=window;
+    const {EthersAdapter}=window;
+    const adapter=new EthersAdapter();
+    appkit=createAppKit({
+      adapters:[adapter],
+      networks:[
+        {id:677,name:'BOT Mainnet',nativeCurrency:{name:'BOT',symbol:'BOT',decimals:18},rpcUrls:{default:{http:['https://rpc.botchain.ai']}}},
+        {id:968,name:'BOT Testnet',nativeCurrency:{name:'BOT',symbol:'BOT',decimals:18},rpcUrls:{default:{http:['https://rpc.bohr.life']}}}
+      ],
+      projectId:PROJECT_ID,
+      features:{analytics:false}
+    });
+    appkit.subscribeAccount((a)=>{const addr=a.address||null;const b=$('#connect')||$('#connectBtn')||$('#walletBtn')||$('#wbtn');if(b)b.textContent=addr?addr.slice(0,6)+'…'+addr.slice(-4):'Connect wallet';const m=$('#mode')||$('#modeTag');if(m)m.textContent=addr?'LIVE':'DEMO';});
+    appkit.subscribeNetwork((n)=>{if(n&&n.chainId){currentNet=Number(n.chainId);const b=$('#badge')||$('#cid')||$('#chainBadge')||$('#netpill');if(b)b.textContent='Chain ID '+currentNet;}});
+  }catch(e){console.warn('AppKit init failed',e);}
+}
+async function appkitConnect(){
+  if(!appkit)await initAppKit();
+  if(appkit){try{await appkit.open();}catch(e){toast('AppKit connect failed: '+(e.message||e.code),'err');return;}}
+  if(!window.ethereum){toast('No wallet found - install a Web3 wallet',true);return;}
+  try{const accts=await window.ethereum.request({method:'eth_requestAccounts'});setWallet(accts.length>0,accts[0]);provider=new ethers.BrowserProvider(window.ethereum);signer=await provider.getSigner();await ensureChain();initContract();}catch(e){toast('Wallet connect: '+(e.message||e.code),true);}
+}
+function setWallet(connected,addr){const b=$('#connect')||$('#connectBtn')||$('#walletBtn')||$('#wbtn');if(b)b.textContent=addr?addr.slice(0,6)+'…'+addr.slice(-4):'Connect wallet';b.classList.toggle('connected',!!addr);}
+function initContract(){if(!currentNet){return;}try{const provider=new ethers.JsonRpcProvider(NETS[currentNet].rpc);contract=new ethers.Contract(NETS[currentNet].ca,[],signer||provider);}catch(e){console.warn('contract init',e);contract=null;}}
+async function ensureChain(){if(!window.ethereum)return;try{const cid=await window.ethereum.request({method:'eth_chainId'});currentNet=Number(cid);if(!NETS[currentNet]){try{await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x2a5'}]})}catch(sw){if(sw.code===4902){try{await window.ethereum.request({method:'wallet_addEthereumChain',params:[{chainId:'0x2a5',chainName:'BOT Chain Mainnet',nativeCurrency:{name:'BOT',symbol:'BOT',decimals:18},rpcUrls:['https://rpc.botchain.ai']}]})}catch(ae){toast('Add chain failed: '+(ae.message||ae.code),'err');}}}else{toast('Switch rejected: '+(sw.message||sw.code),'err');}}}catch(e){currentNet=677;}}
+
+function explainError(e){if(!e)return 'Unknown error';const m=e.shortMessage||e.reason||(e.data&&e.data.message)||'';if(e.code===4001)return 'Transaction rejected in wallet. Nothing spent on-chain.';let msg=String(m||e.message||String(e));msg=msg.replace(/^execution reverted:/i,'').trim();if(msg.length>170)msg=msg.slice(0,167)+'...';return msg;}
+
+async function sendTx(btn,fnName,args,valueEth,label){if(!contract||!signer){toast('Connect wallet first',true);return}const resting=btn.textContent;btn.disabled=true;btn.classList.add('busy');btn.textContent='Confirm in wallet...';try{if(!currentNet)await ensureChain();const usable=contract.connect(signer);const tx=valueEth!=null?await usable[fnName](...args,{value:ethers.parseEther(String(valueEth))}):await usable[fnName](...args);const rc=await tx.wait();toast((label||fnName)+' confirmed on '+(currentNet?currentNet.label:'chain'));return tx;}catch(e){toast(explainError(e),true);throw e;}finally{btn.disabled=false;btn.classList.remove('busy');btn.textContent=resting;}}
+
+function initGSAP(){
+  if(typeof gsap==='undefined')return;
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduced){document.querySelectorAll('.rv').forEach(el=>{el.style.opacity='1';el.style.transform='none';});return;}
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.from('.rv',{opacity:0,y:26,duration:0.7,ease:'expo.out',stagger:0.07});
+  gsap.utils.toArray('.rv').forEach(el=>{gsap.from(el,{opacity:0,y:34,duration:0.8,ease:'expo.out',scrollTrigger:{trigger:el,start:'top 85%'},clearProps:'all'});});
+}
+
+function addBusyStates(){
+  document.addEventListener('click',function(e){const btn=e.target.closest('button');if(btn&&!btn.classList.contains('busy')&&!btn.disabled){btn.disabled=true;btn.classList.add('busy');const origText=btn.textContent;btn.textContent='Confirming...';setTimeout(()=>{btn.disabled=false;btn.classList.remove('busy');btn.textContent=origText;},5000);}},true);
+}
+
+function addAria(){
+  document.querySelectorAll('button').forEach(b=>{if(!b.getAttribute('aria-label')&&!b.getAttribute('aria-labelledby')){b.setAttribute('aria-label',b.textContent.trim()||'button');}});
+  document.querySelectorAll('input,select,textarea').forEach(el=>{if(!el.getAttribute('aria-label')&&!el.getAttribute('aria-labelledby')){const lab=el.previousElementSibling;if(lab&&lab.tagName==='LABEL'){el.setAttribute('aria-labelledby',lab.id||(lab.id='lab-'+Math.random().toString(36).slice(2)));}});
+}
+
+if(window.ethereum&&window.ethereum.on){
+  window.ethereum.on('accountsChanged',(a)=>{
+    const b=$('#connect')||$('#connectBtn')||$('#walletBtn')||$('#wbtn');
+    if(b)b.textContent=a&&a[0]?a[0].slice(0,6)+'…'+a[0].slice(-4):'Connect wallet';
+  });
+  window.ethereum.on('chainChanged',(id)=>{
+    const n=parseInt(id,16);
+    const b=$('#badge')||$('#cid')||$('#chainBadge')||$('#netpill');
+    if(b)b.textContent='Chain ID '+n;
+  });
+}</script></body></html>
