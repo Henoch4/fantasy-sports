@@ -100,6 +100,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 <script>
+const PROJECT_ID = 'ee6081d44f535b82b71aa2003badb2b7'; // AppKit project ID — wired for BOT Chain 677
+
 const CA={677:'0x00000000000000000000000000000000000000CA',968:''}; // TODO:deployed contract addresses
 const ABI=['function createContest(string name,uint256 entryFee,uint256 deadline) returns (uint256)','function joinContest(uint256 contestId) payable','function resolveContest(uint256 contestId,address winner)','function contestCount() view returns (uint256)','function getContest(uint256 id) view returns (string name,uint256 entryFee,uint256 deadline,uint256 pool,uint256 entrants,bool resolved)'];
 const COUNT_FN='contestCount',GET_FN='getContest';
