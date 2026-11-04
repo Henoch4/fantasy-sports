@@ -1,7 +1,7 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Pitchside Pot — On-chain Fantasy Contests</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;500;600&family=Familjen+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root{--motion-fast:200ms;--motion-base:600ms;--motion-slow:1100ms;--t:#052c33;--t2:#0a3f48;--t3:#0f5662;--chalk:#f3f1ea;--sal:#ff6f61;--line:#ffffff26}
@@ -68,150 +68,14 @@ footer b{color:var(--chalk)}footer a{color:var(--sal)}
 @media(hover:none){.cur{display:none}}
 
 @media(prefers-reduced-motion:reduce){.rv{transition:none!important;opacity:1;transform:none!important}*{animation:none!important}}
-button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--acc,currentColor);outline-offset:2px}</style></head><body>
-<div class="cur" id="cur"></div>
-<div class="top"><a class="lg" href="javascript:void(0)">Pitchside<b>Pot</b></a><div class="ctl">
-<span class="chip">Chain ID <b data-chain>677</b></span>
-<select class="chip" data-net aria-label="Network"><option value="677">Mainnet 677</option><option value="968">Testnet 968</option></select>
-
-<button class="chip hot" id="connect" data-connect><span data-acct>Connect wallet</span></button></div></div>
-
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--acc,currentColor);outline-offset:2px}</style><link href="./product.css" rel="stylesheet"><script defer src="./vendor/ethers.umd.min.js"></script><script defer src="./product.js"></script></head><body id="top" class="suite-product"><div class="suite-nav" role="navigation" aria-label="Main navigation"><a class="suite-brand" href="#top">Pitchside Pot</a><span id="suite-network" role="status">Checking mainnet…</span><button id="suite-wallet" type="button" disabled>Connect wallet</button><button id="suite-disconnect" type="button" hidden>Disconnect</button><a href="#suite-workspace">Open app</a></div>
 <header class="hero">
 <h1 class="rv">Play<br><em>for the</em><br><span class="s">pot.</span></h1>
-<div class="copy rv"><p class="launch">Built on BOT Chain Mainnet</p><p>Entry fees go in, the prize pool grows, a winner is resolved on-chain. Every contest is a public ledger — no house, no hidden rake.</p></div>
-<div class="board rv"><div class="l">TOTAL PRIZE POOLS · BOT · <span data-mode>Demo mode</span></div><div class="digits" id="digits"></div></div>
-</header>
-<div class="tick"><div><span>Join · Compete · Resolve</span><span></span><span>Entry fee in, prize pool out</span><span></span><span>Winner takes the pot</span><span></span><span>Join · Compete · Resolve</span><span></span><span>Entry fee in, prize pool out</span><span></span><span>Winner takes the pot</span><span></span></div></div>
+<div class="copy rv"><p class="launch">Built for BOT Chain</p></div>
 
-<section><div class="lab rv">Fixtures</div><h2 class="rv">The <span>league</span> table</h2>
-<div class="tbl"><div class="hd"><span>No.</span><span>Contest</span><span>Entry</span><span>Pool</span><span>Entrants</span><span></span></div><div id="list"></div></div></section>
-
-<section><div class="lab rv">Locker room</div><h2 class="rv">Run the <span>contest</span></h2>
-<div class="locker rv">
-<form class="fm" id="f1"><h5><i>01 · ORGANISER</i>createContest</h5><label>Contest name<input name="n" placeholder="Weekend Gameweek Cup" required></label><label>Entry fee (BOT)<input name="fee" type="number" step="any" min="0" value="0.25" required></label><label>Deadline<input name="d" type="datetime-local" required></label><button>Open contest</button></form>
-<form class="fm" id="f2"><h5><i>02 · PLAYER</i>joinContest</h5><label>Contest #<input name="id" type="number" min="1" value="1" required></label><span class="note">Sends the entry fee as value.</span><button>Pay &amp;join</button></form>
-<form class="fm" id="f3"><h5><i>03 · REFEREE</i>resolveContest</h5><label>Contest #<input name="id" type="number" min="1" value="1" required></label><label>Winner address<input name="w" placeholder="0x…" required></label><button>Blow the whistle</button></form></div></section>
-<div class="big">Built on BOT Chain Mainnet</div>
-<footer><span>Pitchside Pot — Fantasy sports contests with entry fees and prize pools on BOT Chain</span><span>&#8226;Chain ID <b>677</b> &#8226;Contract <span class="mono">0xCA…</span></span><span>&#8226; <a href="https://botchain.ai" target="_blank" rel="noopener">BOT Chain Website</a> &#8226; <a href="https://scan.botchain.ai/" target="_blank" rel="noopener">BOTScan Explorer</a></span></footer>
-<div id="toasts"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@reown/appkit@1.8.21/dist/appkit.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@reown/appkit-adapter-ethers@1.8.21/dist/appkit-adapter-ethers.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-<script>
-const PROJECT_ID = 'ee6081d44f535b82b71aa2003badb2b7'; // AppKit project ID — wired for BOT Chain 677
-
-const CA={677:'0x00000000000000000000000000000000000000CA',968:''}; // TODO:deployed contract addresses
-const ABI=['function createContest(string name,uint256 entryFee,uint256 deadline) returns (uint256)','function joinContest(uint256 contestId) payable','function resolveContest(uint256 contestId,address winner)','function contestCount() view returns (uint256)','function getContest(uint256 id) view returns (string name,uint256 entryFee,uint256 deadline,uint256 pool,uint256 entrants,bool resolved)'];
-const COUNT_FN='contestCount',GET_FN='getContest';
-const now=Math.floor(Date.now()/1000);
-const DEMO=[{id:3,name:'Gameweek Cup',fee:'0.25',deadline:now+86400*2,pool:'18.5',n:74,done:false},{id:2,name:'Sunday Sevens',fee:'1',deadline:now+86400*5,pool:'42',n:42,done:false},{id:1,name:'Derby Day Showdown',fee:'0.5',deadline:now-86400*3,pool:'31',n:62,done:true}];
-function fromTuple(id,t){return{id,name:t[0],fee:ethers.formatEther(t[1]),deadline:Number(t[2]),pool:ethers.formatEther(t[3]),n:Number(t[4]),done:t[5]}}
-const S={net:677,account:null,provider:null,signer:null,items:[]};
-const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
-function toast(msg,kind='info'){const t=document.createElement('div');t.className='toast '+kind;t.textContent=msg;$('#toasts').appendChild(t);requestAnimationFrame(()=>t.classList.add('in'));setTimeout(()=>{t.classList.remove('in');setTimeout(()=>t.remove(),400)},4200)}
-function short(a){return a?a.slice(0,6)+'…'+a.slice(-4):''}
-function demoMode(){return !(S.signer&&CA[S.net])}
-function paintMode(){const d=demoMode();$$('[data-mode]').forEach(e=>e.textContent=d?'Demo mode · sample data':'Live · on-chain');document.body.classList.toggle('live',!d);$$('[data-chain]').forEach(e=>e.textContent=S.net);$$('[data-acct]').forEach(e=>e.textContent=S.account?short(S.account):'Connect wallet')}
-async function addChain(id){const n=NETS[id];await window.ethereum.request({method:'wallet_addEthereumChain',params:[{chainId:n.hex,chainName:n.name,nativeCurrency:{name:n.cur,symbol:n.cur,decimals:18},rpcUrls:[n.rpc],blockExplorerUrls:[n.scan]}]})}
-async function ensureChain(id){if(!window.ethereum)return;try{await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:NETS[id].hex}]})}catch(e){if(e.code===4902||(e.data&&e.data.originalError&&e.data.originalError.code===4902)||/unrecognized|not added/i.test(explainError(e)||'')){await addChain(id)}else throw e}}
-// ===== Phase B:AppKit + GSAP runtime =====
-let appkit=null, currentNet=677, contract=null, signer=null;
-
-async function initAppKit(){
- try{
- const{createAppKit}=window;
- const{EthersAdapter}=window;
- const adapter=new EthersAdapter();
- appkit=createAppKit({
- adapters:[adapter],
- networks:[
-{id:677,name:'BOT Mainnet',nativeCurrency:{name:'BOT',symbol:'BOT',decimals:18},rpcUrls:{default:{http:['https://rpc.botchain.ai']}}},
-{id:968,name:'BOT Testnet',nativeCurrency:{name:'BOT',symbol:'BOT',decimals:18},rpcUrls:{default:{http:['https://rpc.bohr.life']}}}
-      ],
- projectId:PROJECT_ID,
- features:{analytics:false}
-});
- appkit.subscribeAccount((a)=>{const addr=a.address||null;const b=$('#connect')||$('#connectBtn')||$('#walletBtn')||$('#wbtn');if(b)b.textContent=addr?addr.slice(0,6)+'…'+addr.slice(-4):'Connect wallet';const m=$('#mode')||$('#modeTag');if(m)m.textContent=addr?'LIVE':'DEMO'});
- appkit.subscribeNetwork((n)=>{if(n&&n.chainId){currentNet=Number(n.chainId);const b=$('#badge')||$('#cid')||$('#chainBadge')||$('#netpill');if(b)b.textContent='Chain ID '+currentNet}});
-}catch(e){console.warn('AppKit init failed',e)}
-}
-async function appkitConnect(){
- if(!appkit)await initAppKit();
- if(appkit){try{await appkit.open()}catch(e){toast('AppKit connect failed: '+(explainError(e)||e.code),'err')}return}
-  // Fallback:raw ethers connect
- if(!window.ethereum){toast('No wallet found - install a Web3 wallet',true);return}
- try{const accts=await window.ethereum.request({method:'eth_requestAccounts'});setWallet(accts.length>0,accts[0]);provider=new ethers.BrowserProvider(window.ethereum);signer=await provider.getSigner();await ensureChain();initContract()}catch(e){toast('Wallet connect: '+ (explainError(e)||e.code),true)}}
-function setWallet(connected,addr){const b=$('#connect')||$('#connectBtn')||$('#walletBtn')||$('#wbtn');if(b)b.textContent=addr?addr.slice(0,6)+'…'+addr.slice(-4):'Connect wallet';b.classList.toggle('connected',!!addr)}
-function initContract(){if(!currentNet){return}try{const provider=new ethers.JsonRpcProvider(NETS[currentNet].rpc);const abi=[];contract=new ethers.Contract(NETS[currentNet].ca,abi,signer||provider)}catch(e){console.warn('contract init',e);contract=null}}
-async function ensureChain(){if(!window.ethereum)return;try{const cid=await window.ethereum.request({method:'eth_chainId'});currentNet=Number(cid);if(!NETS[currentNet]){try{await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x2a5'}]});currentNet=677}catch(sw){if(sw.code===4902||/unrecognized|not added|add/i.test(sw.message||sw.code||'')){try{await window.ethereum.request({method:'wallet_addEthereumChain',params:[{chainId:'0x2a5',chainName:'BOT Chain Mainnet',nativeCurrency:{name:'BOT',symbol:'BOT',decimals:18},rpcUrls:['https://rpc.botchain.ai'],blockExplorerUrls:['https://scan.botchain.ai']}]});currentNet=677}catch(ae){toast('Add chain failed: '+(ae.message||ae.code),'err')}}else{toast('Switch rejected: '+(sw.message||sw.code),'err')}}}}catch(e4){currentNet=currentNet||677}}
-
-function explainError(e){if(!e)return 'Unknown error';const m=explainError(e)||explainError(e)||(e.data&&e.data.message)||'';if(e.code===4001)return 'Transaction rejected in wallet. Nothing spent on-chain.';let msg=String(m||explainError(e)||String(e));msg=msg.replace(/^execution reverted:/i,'').trim();if(msg.length>170)msg=msg.slice(0,167)+'..';return msg}
-// ===== Phase B:AppKit + GSAP runtime =====
-
-
-
-async function initAppKit(){
- try{
- const{createAppKit}=window;
- const{EthersAdapter}=window;
- const adapter=new EthersAdapter();
- appkit=createAppKit({
- adapters:[adapter],
- networks:[
-{id:677,name:'BOT Mainnet',nativeCurrency:{name:'BOT',symbol:'BOT',decimals:18},rpcUrls:{default:{http:['https://rpc.botchain.ai']}}},
-{id:968,name:'BOT Testnet',nativeCurrency:{name:'BOT',symbol:'BOT',decimals:18},rpcUrls:{default:{http:['https://rpc.bohr.life']}}}
-      ],
- projectId:PROJECT_ID,
- features:{analytics:false}
-});
- appkit.subscribeAccount((a)=>{const addr=a.address||null;const b=$('#connect')||$('#connectBtn')||$('#walletBtn')||$('#wbtn');if(b)b.textContent=addr?addr.slice(0,6)+'…'+addr.slice(-4):'Connect wallet';const m=$('#mode')||$('#modeTag');if(m)m.textContent=addr?'LIVE':'DEMO'});
- appkit.subscribeNetwork((n)=>{if(n&&n.chainId){currentNet=Number(n.chainId);const b=$('#badge')||$('#cid')||$('#chainBadge')||$('#netpill');if(b)b.textContent='Chain ID '+currentNet}});
-}catch(e){console.warn('AppKit init failed',e)}
-}
-async function appkitConnect(){
- if(!appkit)await initAppKit();
- if(appkit){try{await appkit.open()}catch(e){toast('AppKit connect failed: '+(e.message||e.code),'err');return}}
- if(!window.ethereum){toast('No wallet found - install a Web3 wallet',true);return}
- try{const accts=await window.ethereum.request({method:'eth_requestAccounts'});setWallet(accts.length>0,accts[0]);provider=new ethers.BrowserProvider(window.ethereum);signer=await provider.getSigner();await ensureChain();initContract()}catch(e){toast('Wallet connect: '+(e.message||e.code),true)}
-}
-function setWallet(connected,addr){const b=$('#connect')||$('#connectBtn')||$('#walletBtn')||$('#wbtn');if(b)b.textContent=addr?addr.slice(0,6)+'…'+addr.slice(-4):'Connect wallet';b.classList.toggle('connected',!!addr)}
-function initContract(){if(!currentNet){return}try{const provider=new ethers.JsonRpcProvider(NETS[currentNet].rpc);contract=new ethers.Contract(NETS[currentNet].ca,[],signer||provider)}catch(e){console.warn('contract init',e);contract=null}}
-async function ensureChain(){if(!window.ethereum)return;try{const cid=await window.ethereum.request({method:'eth_chainId'});currentNet=Number(cid);if(!NETS[currentNet]){try{await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x2a5'}]});currentNet=677}catch(sw){if(sw.code===4902||/unrecognized|not added|add/i.test(sw.message||sw.code||'')){try{await window.ethereum.request({method:'wallet_addEthereumChain',params:[{chainId:'0x2a5',chainName:'BOT Chain Mainnet',nativeCurrency:{name:'BOT',symbol:'BOT',decimals:18},rpcUrls:['https://rpc.botchain.ai'],blockExplorerUrls:['https://scan.botchain.ai']}]});currentNet=677}catch(ae){toast('Add chain failed: '+(ae.message||ae.code),'err')}}else{toast('Switch rejected: '+(sw.message||sw.code),'err')}}}}catch(e4){currentNet=currentNet||677}}
-
-function explainError(e){if(!e)return 'Unknown error';const m=e.shortMessage||e.reason||(e.data&&e.data.message)||'';if(e.code===4001)return 'Transaction rejected in wallet. Nothing spent on-chain.';let msg=String(m||e.message||String(e));msg=msg.replace(/^execution reverted:/i,'').trim();if(msg.length>170)msg=msg.slice(0,167)+'..';return msg}
-
-$('[data-connect]').forEach(b=>b.addEventListener('click',appkitConnect));
-
-async function sendTx(btn,fnName,args,valueEth,label){if(!contract||!signer){toast('Connect wallet first',true);return}const resting=btn.textContent;btn.disabled=true;btn.classList.add('busy');btn.textContent='Confirm in wallet..';try{if(!currentNet)await ensureChain();const usable=contract.connect(signer);const tx=valueEth!=null?await usable[fnName](...args,{value:ethers.parseEther(String(valueEth))}):await usable[fnName](...args);const rc=await tx.wait();toast((label||fnName)+' confirmed on '+(currentNet?currentNet.label:'chain'));return tx}catch(e){toast(explainError(e),true);throw e}finally{btn.disabled=false;btn.classList.remove('busy');btn.textContent=resting}}
-
-function initGSAP(){
- if(typeof gsap==='undefined')return;
- const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
- if(reduced){document.querySelectorAll('.rv').forEach(el=>{el.style.opacity='1';el.style.transform='none'});return}
- gsap.registerPlugin(ScrollTrigger);
- gsap.from('.rv',{opacity:0,y:26,duration:0.7,ease:'expo.out',stagger:0.07});
- gsap.utils.toArray('.rv').forEach(el=>{gsap.from(el,{opacity:0,y:34,duration:0.8,ease:'expo.out',scrollTrigger:{trigger:el,start:'top 85%'},clearProps:'all'})});
-}
-
-function addBusyStates(){
- document.addEventListener('click',function(e){const btn=e.target.closest('button');if(btn&&!btn.classList.contains('busy')&&!btn.disabled){btn.disabled=true;btn.classList.add('busy');const origText=btn.textContent;btn.textContent='Confirming..';setTimeout(()=>{btn.disabled=false;btn.classList.remove('busy');btn.textContent=origText},5000)}},true);
-}
-
-function addAria(){
- document.querySelectorAll('button').forEach(b=>{if(!b.getAttribute('aria-label')&&!b.getAttribute('aria-labelledby')){b.setAttribute('aria-label',b.textContent.trim()||'button')}});
- document.querySelectorAll('input,select,textarea').forEach(el=>{if(!el.getAttribute('aria-label')&&!el.getAttribute('aria-labelledby')){const lab=el.previousElementSibling;if(lab&&lab.tagName==='LABEL'){el.setAttribute('aria-labelledby',lab.id||(lab.id='lab-'+Math.random().toString(36).slice(2)))}}});
-}
-
-if(window.ethereum&&window.ethereum.on){
- window.ethereum.on('accountsChanged',(a)=>{
- const b=$('#connect')||$('#connectBtn')||$('#walletBtn')||$('#wbtn');
- if(b)b.textContent=a&&a[0]?a[0].slice(0,6)+'…'+a[0].slice(-4):'Connect wallet';
-});
- window.ethereum.on('chainChanged',(id)=>{
- const n=parseInt(id,16);
- const b=$('#badge')||$('#cid')||$('#chainBadge')||$('#netpill');
- if(b)b.textContent='Chain ID '+n;
-});
-}</script></body></html>
+</header><main class="suite-workspace suite-layout-1" id="suite-workspace"><p id="suite-message" role="status" aria-live="polite">Checking BOT Chain mainnet…</p><h2 id="suite-heading">Pitchside Pot</h2><p id="suite-summary"></p><div id="suite-address"></div>
+<section id="suite-overview" aria-labelledby="suite-overview-heading"><h2 id="suite-overview-heading">On-chain overview</h2><div class="suite-grid" id="suite-stats"></div><button type="button" id="suite-refresh">Refresh mainnet data</button></section>
+<section id="suite-actions" aria-labelledby="suite-actions-heading"><h2 id="suite-actions-heading">Your next move</h2><p id="suite-actions-note"></p><div class="suite-grid" id="suite-action-grid"></div></section>
+<section id="suite-lookup" aria-labelledby="suite-lookup-heading"><h2 id="suite-lookup-heading">Find a record</h2><label class="suite-field" for="suite-query">What would you like to look up?<select id="suite-query"></select></label><form id="suite-query-form"></form><div id="suite-query-result" class="suite-result" aria-live="polite"></div><div id="suite-record-actions" class="suite-grid"></div></section>
+<section aria-labelledby="suite-history-heading"><h2 id="suite-history-heading">Your session activity</h2><div id="suite-history"></div></section></main>
+<dialog id="suite-review" class="suite-review" aria-labelledby="suite-review-title"><div id="suite-review-content"></div><div class="suite-review-actions"><button type="button" id="suite-confirm">Confirm in wallet</button><button type="button" id="suite-review-cancel">Cancel</button></div></dialog><footer class="suite-footer"><span>Pitchside Pot · BOT Chain mainnet 677</span><a rel="noopener noreferrer" target="_blank" href="https://botchain.ai">BOT Chain Website</a><a rel="noopener noreferrer" target="_blank" href="https://scan.botchain.ai/">BOTScan Explorer</a><span>Mainnet deployment pending</span></footer></body></html>
