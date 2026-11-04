@@ -4,7 +4,7 @@ Join an on-chain contest and track its entry fees and prize pool.
 
 ## Mainnet status
 
-Mainnet deployment is pending. The interface does not simulate transactions or balances.
+Contract on BOT Chain mainnet (677): [0x84E7E526b769cC38C8a5Bb18b27FAF0B0EC42e0A](https://scan.botchain.ai/address/0x84E7E526b769cC38C8a5Bb18b27FAF0B0EC42e0A).
 
 Wallet actions require BOT Chain mainnet, deployed bytecode, and a connected compatible wallet. Every action is simulated before a transaction review; only a subsequent wallet confirmation can send it.
 
@@ -19,7 +19,7 @@ Wallet actions require BOT Chain mainnet, deployed bytecode, and a connected com
 
 ## Contract interface
 
-`frontend/product.json` uses the ABI compiled from the current Solidity source.
+`frontend/product.json` uses the current-source ABI, matched against the deployed mainnet runtime bytecode. Explorer source publication is tracked separately.
 
 | Action | Contract signature |
 |---|---|

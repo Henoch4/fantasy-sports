@@ -1,9 +1,9 @@
 {
-  "abiSource": "pending-current-source",
+  "abiSource": "runtime-matched-current-source",
   "repo": "pitchside-pot",
   "brand": "Pitchside Pot",
   "summary": "Join an on-chain contest and track its entry fees and prize pool.",
-  "address": null,
+  "address": "0x84E7E526b769cC38C8a5Bb18b27FAF0B0EC42e0A",
   "owner": null,
   "abi": [
     {
